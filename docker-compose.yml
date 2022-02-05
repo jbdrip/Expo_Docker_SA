@@ -1,0 +1,72 @@
+version: "3"
+services:
+# -------------- FRONTEND -----------------
+  frontend:
+    build: './frontend'
+    ports:
+      - '8080:80'
+    networks:
+      - red-frontend
+# ------------- SERVIDORES ----------------
+  server_a:
+    build: './servers/server_a'
+    ports:
+      - '3000'
+    networks:
+      - red-backend
+      - red-db
+  server_b:
+    build: './servers/server_b'
+    ports:
+      - '3001'
+    networks:
+      - red-backend
+      - red-db
+# --------- BALANCEADOR DE CARGA ----------
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./load-balancer/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - server_a
+      - server_b
+    ports:
+      - "5000:5000"
+    networks:
+      - red-backend
+      - red-frontend
+# ------------ BASE DE DATOS --------------
+  db:
+    image: 'mongo'
+    container_name: 'DBsa'
+    environment:
+      - MONGO_INITDB_DATABASE=db_sa
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    volumes: 
+      - ./database/init-mongo.js:/docker-entrypoint-initdb.d/init/mongo.js:ro
+      - ./database/mongo-volume:/data/db
+    ports:
+      - '27017'
+    networks:
+      - red-db
+# ---------------- REDES -----------------
+networks:
+  red-frontend:
+    driver: bridge 
+    ipam:
+      config:
+        - subnet: 192.168.55.0/24
+          gateway: 192.168.55.1
+  red-backend:
+    driver: bridge
+    ipam:
+      config: 
+        - subnet: 192.168.75.0/24
+          gateway: 192.168.75.1
+  red-db:
+    driver: bridge 
+    ipam:
+      config:
+        - subnet: 192.168.15.0/24
+          gateway: 192.168.15.1

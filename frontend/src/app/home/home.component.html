@@ -1,0 +1,80 @@
+
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="row">
+            <div class="col-12 mt-3">
+                <div class="wrapper mt-3">
+                    <h4>Ingreso de Reporte de Practicantes</h4>
+                    <div class="formContent">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-12 p-4">
+                                    <form>
+                                        <div class="form-group">
+                                            <input type="text" id="carnet" name="carnet" placeholder="Carnet"  (keyup)="carnet($event)">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" id="nombre" name="nombre" placeholder="Nombre"  (keyup)="nombre($event)">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" id="curso" name="curso" placeholder="Curso/Proyecto"  (keyup)="curso($event)">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" id="body" name="body" placeholder="Cuerpo del Reporte"  (keyup)="cuerpo($event)">
+                                        </div>
+                                        <input type="button" (click)="ingresarReporte()" class="btn btn-primary" value="Ingresar Reporte">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 mt-3">
+                <div class="wrapper mt-3">
+                    <h4>Historial de Reportes</h4>
+                    <div class="formContent">
+                        <div>
+                            <form>
+                                <div class="form-group">
+                                    <input type="text" id="carnet" name="carnet" placeholder="Carnet"  (keyup)="carnetRep($event)">
+                                </div>
+                                <input type="button" (click)="obtenerReportes()" class="btn btn-primary" value="Obtener Reportes">
+                            </form>
+                            <div class="col-12">
+                                <table class="table">
+                                    <thead>
+                                      <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Carnet</th>
+                                        <th scope="col">Nombre</th>
+                                        <th scope="col">Proyecto</th>
+                                        <th scope="col">Servidor</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr *ngFor = "let data of historialReportes;  let i = index">
+                                        <th scope="row" (click)="openProducto(data)">{{i+1}}</th>
+                                        <td (click)="openProducto(data)">{{data.carnet}}</td>
+                                        <td (click)="openProducto(data)">{{data.nombre}}</td>
+                                        <td (click)="openProducto(data)">{{data.curso}}</td>
+                                        <td (click)="openProducto(data)">{{data.servidor}}</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    
+</div>
+
+
+
